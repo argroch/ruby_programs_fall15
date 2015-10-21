@@ -6,11 +6,11 @@ pl_word = ""
 
 #hard way, because we haven't covered Arrays:
 
-# if word[0] == "a" || word[0] == "e" || word[0] == "i" || word[0] == "o" || word[0] == "u"
-# 	pl_word = word + "way"
-# else
-# 	pl_word = word[1..(word.length-1)] + word[0] + "ay"
-# end
+if word[0] == "a" || word[0] == "e" || word[0] == "i" || word[0] == "o" || word[0] == "u"
+	pl_word = word + "way"
+else
+	pl_word = word[1..(word.length-1)] + word[0] + "ay"
+end
 
 #easy, Array way:
 vowels = ['a','e','i','o','u']
