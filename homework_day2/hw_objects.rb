@@ -23,7 +23,6 @@ class Pizza
 end
 
 class House
-
 	def initialize(address, hs_sq_ft, prop_sq_ft, bedrooms, bathrooms)
 		@address = address
 		@hs_sq_ft = hs_sq_ft

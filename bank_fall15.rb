@@ -1,0 +1,200 @@
+class Account
+
+	def initialize(name,acct_num,balance)
+		@name = name
+		@acct_num = acct_num
+		@balance = balance
+	end
+
+	def name
+		@name
+	end
+
+	def acct_num
+		@acct_num
+	end
+
+	def balance
+		@balance
+	end
+
+	def withdrawal(amount)
+		@balance -= amount
+	end
+
+	def deposit(amount)
+		@balance += amount
+	end
+
+end
+
+@accounts = []
+
+def main_menu
+	puts "Please choose from the following selections: "
+	puts "-------------------"
+	puts "1. Create an Account"
+	puts "2. Account Menu"
+	puts "3. End Session"
+
+	choice = gets.chomp.to_i
+
+	if choice == 1
+		create_account
+	elsif choice == 2
+		account_lookup
+	elsif choice == 3
+		end_session
+	else
+		puts `clear`
+		puts "Not a valid selection."
+		main_menu
+	end
+end
+
+def end_session
+	puts `clear`
+	puts "Thank you for banking with us."
+	puts "Goodbye."
+end
+
+def create_account
+	puts "Please provide your name: "
+	name = gets.chomp
+	puts "Your initial deposit will be?"
+	balance = gets.chomp.to_f
+
+	acct_num = @accounts.length + 1
+
+	new_account = Account.new(name, acct_num, balance)
+
+	@accounts.push(new_account)
+
+	puts "Account created succesfully!"
+	puts new_account.name
+	puts "Account no. #{new_account.acct_num}"
+	puts "$#{new_account.balance}"
+
+	return_to_main_menu
+end
+
+def account_lookup
+	puts `clear`
+	puts "Please provide..."
+	puts "Name attached to account: "
+	name = gets.chomp
+	puts "Account number: "
+	num = gets.chomp.to_i
+
+	current_account = ""
+	account_found = false
+
+	@accounts.each do |acct|
+		if name == acct.name && num == acct.acct_num
+			current_account = acct
+			account_found = true
+		end
+	end
+
+	if account_found == false
+		puts "No matching account found."
+		puts "Try again? [y/n]"
+		choice = gets.chomp.downcase
+
+		if choice == "y"
+			account_lookup
+		else
+			main_menu
+		end
+	else
+		account_menu(current_account)
+	end
+end
+
+def account_menu(acct)
+	puts "Welcome back, #{acct.name}!"
+	puts "Choose from the following: "
+	puts "-------------------------- "
+	puts "1. Check Balance"
+	puts "2. Make a Deposit"
+	puts "3. Make a Withdrawal"
+	puts "4. Return to Main Menu"
+
+	choice = gets.chomp.to_i
+
+	if choice == 1
+		check_balance(acct)
+	elsif choice == 2
+		make_deposit(acct)
+	elsif choice == 3
+		make_withdrawal(acct)
+	elsif choice == 4
+		main_menu
+	else
+		puts "Not a valid selection."
+		account_menu(acct)
+	end
+end
+
+def check_balance(acct)
+	puts acct.name
+	puts "Current balance: $#{acct.balance}"
+	return_to_account_menu(acct)
+end
+
+def make_deposit(acct)
+	puts "How much would you like to deposit today?"
+	deposit = gets.chomp.to_f
+
+	acct.deposit(deposit)
+
+	puts "Your balance is now $#{acct.balance}"
+
+	return_to_account_menu(acct)
+end
+
+def make_withdrawal(acct)
+	puts "How much would you like to withdrawal today?"
+	withdrawal = gets.chomp.to_f
+
+	if withdrawal > acct.balance
+		puts "Insufficient funds."
+		puts "Account balance: #{acct.balance}"
+		puts "Please make a smaller withdrawal."
+		sleep(5)
+		make_withdrawal(acct)
+	else
+		acct.withdrawal(withdrawal)
+
+		puts "Your balance is now $#{acct.balance}"
+
+		return_to_account_menu(acct)
+	end
+end
+
+def return_to_account_menu(acct)
+	puts "Return to the Account Menu? [y/n]"
+	choice = gets.chomp.downcase
+	if choice == "y"
+		puts `clear`
+		account_menu(acct)
+	else
+		puts `clear`
+		end_session
+	end
+end
+
+def return_to_main_menu
+	puts "Return to Main Menu? [y/n]"
+	choice = gets.chomp.downcase
+	if choice == "y"
+		puts `clear`
+		main_menu
+	else
+		puts `clear`
+		end_session
+	end
+end
+
+puts "Welcome to Tech Talent Bank"
+main_menu
